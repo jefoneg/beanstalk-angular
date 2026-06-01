@@ -5,6 +5,8 @@
   <div class="hero-content">
     <h1>{{ GetStartedConstant.WELCOME_TO }} <strong>{{ GetStartedConstant.APP_NAME }}</strong></h1>
     <p>{{ GetStartedConstant.DESCRIPTION }}</p>
-    <button class="btn getstarted-btn">{{ GetStartedConstant.BUTTON_TEXT }}</button>
+    <button class="btn getstarted-btn" (click)="onGetStarted()">
+      {{ GetStartedConstant.BUTTON_TEXT }}
+    </button>
   </div>
 </div>
