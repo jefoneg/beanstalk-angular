@@ -1,0 +1,32 @@
+<div class="container main-container">
+  <div class="login-container">
+    <img src="/illustrations/coffee-cup2.svg" alt="" />
+    <form>
+      <div class="logintext-container">
+        <h1>{{ LoginConstant.WELCOME_BACK }}<strong>{{ GetStartedConstant.APP_NAME }}</strong></h1>
+        <p>{{ LoginConstant.READY_FOR_ANOTHER_CUP }}</p>
+        <p>{{ LoginConstant.LOGIN_TO_DISCOVER }}</p>
+      </div>
+      <div class="login-form">
+        <input
+          class="form-control"
+          type="email"
+          id="email"
+          [placeholder]="LoginConstant.EMAIL"
+          required
+        />
+        <input
+          class="form-control"
+          type="password"
+          id="password"
+          [placeholder]="LoginConstant.PASSWORD"
+          required
+        />
+        <button class="btn" type="submit">{{ LoginConstant.LOGIN }}</button>
+      </div>
+      <div class="new-account-container">
+        <p>{{ LoginConstant.NEW }} <a href="#">{{ LoginConstant.SIGN_UP }}</a></p>
+      </div>
+    </form>
+  </div>
+</div>
