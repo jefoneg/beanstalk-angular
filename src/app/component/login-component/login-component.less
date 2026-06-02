@@ -39,6 +39,39 @@
         font-size: 12px;
         font-weight: 400;
         margin-bottom: 2px;
+        text-wrap: wrap;
+
+        @media (min-width: @tablet) {
+          font-size: @tablet-paragraph-font-size;
+        }
+
+        @media (min-width: @large-desktop) {
+          font-size: @desktop-paragraph-font-size;
+        }
+      }
+    }
+
+    .error-message {
+      padding: 0 30px 0 30px;
+      text-align: center;
+      width: 100vw;
+
+      @media (min-width: @tablet) {
+        width: 50vw;
+      }
+
+      @media (min-width: @laptop) {
+        width: 40vw;
+      }
+
+      @media (min-width: @large-desktop) {
+        width: 25vw;
+      }
+
+      div {
+        @media (min-width: @phone-sm) {
+          font-size: @phone-paragraph-font-size;
+        }
 
         @media (min-width: @tablet) {
           font-size: @tablet-paragraph-font-size;
@@ -105,6 +138,12 @@
         background-color: @quaternary-color;
         font-weight: 600;
         font-size: @phone-paragraph-font-size;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: @tertiary-color;
+          transform: scale(1.06);
+        }
 
         @media (min-width: @tablet) {
           font-size: @tablet-paragraph-font-size;
@@ -150,6 +189,11 @@
       text-decoration: none;
       color: black;
       font-weight: 500;
+
+      &:hover {
+        cursor: pointer;
+        color: @quaternary-color;
+      }
     }
   }
 }
