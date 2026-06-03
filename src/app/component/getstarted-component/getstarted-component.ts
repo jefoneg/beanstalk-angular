@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { GetStartedConstant } from '../../../constants/get-started.constant';
 import { Router } from '@angular/router';
+import { RoutesEnum } from '../../../enums/routes.enum';
 
 @Component({
   selector: 'app-getstarted-component',
@@ -35,7 +36,7 @@ export class GetstartedComponent {
    */
   protected onGetStarted(): void {
     if (!this.isLoggedIn) {
-      this.router.navigate(['/login']);
+      this.router.navigate([RoutesEnum.Login]);
     }
   }
 }
