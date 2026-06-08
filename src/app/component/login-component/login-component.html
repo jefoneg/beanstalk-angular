@@ -1,22 +1,34 @@
 <div class="container main-container">
   <div class="login-container">
-    <img
-      [src]="isRegisterAccountClicked ? LoginConstant.REGISTER_SVG : LoginConstant.LOGIN_SVG"
-      [alt]="LoginConstant.LOGIN_SVG_ALT"
-    />
+    <img [src]="LoginConstant.LOGIN_SVG" [alt]="LoginConstant.LOGIN_SVG_ALT" />
     <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
       <div class="logintext-container">
-        <h1>{{ setLoginHeroTexts(0) }} <strong>{{ GetStartedConstant.APP_NAME }}</strong></h1>
-        <p>{{ setLoginHeroTexts(1) }}</p>
-        <p>{{ setLoginHeroTexts(2) }}</p>
+        <h1>
+          {{ LoginConstant.WELCOME_BACK }} <strong>{{ GetStartedConstant.APP_NAME }}</strong>
+        </h1>
+        <p>{{ LoginConstant.READY_FOR_ANOTHER_CUP }}</p>
+        <p>{{ LoginConstant.LOGIN_TO_DISCOVER }}</p>
       </div>
       <div class="error-message">
-        @if (!isFormGroupValid) {
-        <div class="alert alert-danger" role="alert">{{ formErrorMessage }}</div>
+        @if (loginService.signalMessage$() || formErrorMessage || formSucessMessage) {
+          <div
+            class="alert"
+            [ngClass]="
+              loginService.signalMessage$() || formErrorMessage ? 'alert-danger' : 'alert-success'
+            "
+            role="alert"
+          >
+            {{
+              loginService.signalMessage$()
+                ? loginService.signalMessage$()
+                : formSucessMessage
+                  ? formSucessMessage
+                  : formErrorMessage
+            }}
+          </div>
         }
       </div>
       <div class="login-form">
-        @if (!isRegisterAccountClicked) {
         <input
           class="form-control"
           formControlName="email"
@@ -31,51 +43,20 @@
           id="password"
           [placeholder]="LoginConstant.PASSWORD"
         />
-        } @else {
-        <input
-          class="form-control"
-          formControlName="firstName"
-          type="text"
-          id="text"
-          [placeholder]="LoginConstant.NAME"
-        />
-        <input
-          class="form-control"
-          formControlName="lastName"
-          type="text"
-          id="text"
-          [placeholder]="LoginConstant.LAST_NAME"
-        />
-        <input
-          class="form-control"
-          formControlName="email"
-          type="email"
-          id="email"
-          [placeholder]="LoginConstant.EMAIL"
-        />
-        <input
-          class="form-control"
-          formControlName="password"
-          type="password"
-          id="password"
-          [placeholder]="LoginConstant.PASSWORD"
-        />
-        }
-        <button class="btn" type="submit">
-          {{ isRegisterAccountClicked ? LoginConstant.REGISTER : LoginConstant.LOGIN }}
+        <button class="btn" [disabled]="isOnSubmit" type="submit">
+          {{ LoginConstant.LOGIN }}
         </button>
       </div>
       <div class="new-account-container">
-        @if (!isRegisterAccountClicked) {
         <p>
-          {{ LoginConstant.NEW }} <a (click)="onLoginAction(true)">{{ LoginConstant.SIGN_UP }}</a>
+          Forgot your password?
+          <a (click)="onLoginAction(true)">{{ LoginConstant.FORGOT_PASSWWORD }}</a>
         </p>
-        } @else {
+
         <p>
           {{ LoginConstant.ALREADY_HAVE_ACCOUNT }}
-          <a (click)="onLoginAction(false)">{{ LoginConstant.LOGIN }}</a>
+          <a (click)="onLoginAction()">{{ LoginConstant.REGISTER }}</a>
         </p>
-        }
       </div>
     </form>
   </div>

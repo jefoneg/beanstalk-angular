@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="cafes-container">
+    <div class="header">
+      <h1>{{ sectionTitle }}</h1>
+      <button class="btn" (click)="onViewMore(viewMoreMode)">
+        {{ HomeConstant.SECTIONS.VIEW_MORE }}
+      </button>
+    </div>
+    <div class="row">
+      @for (cafe of cafeInformation; track cafe.cafeName) {
+      <div class="col-sm">
+        <div class="cafe-cards">
+          <div class="image-container">
+            <a (click)="onViewCafe(cafe.param)">
+              <img
+                [ngSrc]="HomeHelpers.getCafeImage(cafe.imgSrc)"
+                width="400"
+                height="250"
+                [alt]="cafe?.cafeName"
+                priority
+            /></a>
+          </div>
+          <div class="cafe-information">
+            <h1>{{ cafe?.cafeName }}</h1>
+            <p>{{ cafe?.rating }} ✨</p>
+            <p>
+              {{ HomeHelpers.displayPriceRange(cafe.minPriceRange, cafe.maxPriceRange,
+              cafe.currency) }}
+            </p>
+            <p>📍{{ cafe?.location }}</p>
+            <p class="tags">
+              @for (tag of cafe.tags; track tag) {
+              <span>{{ tag }}</span>
+              }
+            </p>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>

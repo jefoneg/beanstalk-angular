@@ -1,0 +1,63 @@
+<div class="container main-container">
+  <div class="login-container">
+    <img
+      [src]="LoginConstant.REGISTER_SVG"
+      [alt]="LoginConstant.LOGIN_SVG_ALT"
+    />
+    <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
+      <div class="logintext-container">
+        <h1>
+          {{ LoginConstant.JOIN }} <strong>{{ GetStartedConstant.APP_NAME }}</strong>
+        </h1>
+        <p>{{ LoginConstant.START_DISCOVERING }}</p>
+        <p>{{ emptyString }}</p>
+      </div>
+      <div class="error-message">
+        @if (formErrorMessage || loginService.signalMessage$() ) {
+          <div class="alert alert-danger" role="alert">
+            {{ formErrorMessage ? formErrorMessage : loginService.signalMessage$() }}
+          </div>
+        }
+      </div>
+      <div class="login-form">
+          <input
+            class="form-control"
+            formControlName="firstName"
+            type="text"
+            id="text"
+            [placeholder]="LoginConstant.NAME"
+          />
+          <input
+            class="form-control"
+            formControlName="lastName"
+            type="text"
+            id="text"
+            [placeholder]="LoginConstant.LAST_NAME"
+          />
+          <input
+            class="form-control"
+            formControlName="email"
+            type="email"
+            id="email"
+            [placeholder]="LoginConstant.EMAIL"
+          />
+          <input
+            class="form-control"
+            formControlName="password"
+            type="password"
+            id="password"
+            [placeholder]="LoginConstant.PASSWORD"
+          />
+        <button class="btn" [disabled]="isOnSubmit" type="submit">
+          {{ LoginConstant.REGISTER }}
+        </button>
+      </div>
+      <div class="new-account-container">
+          <p>
+            {{ LoginConstant.ALREADY_HAVE_ACCOUNT }}
+            <a (click)="onLoginAction()">{{ LoginConstant.LOGIN }}</a>
+          </p>
+      </div>
+    </form>
+  </div>
+</div>

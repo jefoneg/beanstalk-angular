@@ -14,24 +14,24 @@ import { GetStartedConstant } from '../../../constants/get-started.constant';
 import { LoginConstant } from '../../../constants/login.constant';
 import { RoutesEnum } from '../../../enums/routes.enum';
 import { SeparatorEnum } from '../../../enums/separator.enum';
+import { RegisterPayload } from '../../../modes/payload.model';
 import { ApiService } from '../../service/api-service';
 import { LoginService } from '../../service/login-service';
-import { LoginPayload } from '../../../modes/payload.model';
 
 @Component({
-  selector: 'app-login-component',
+  selector: 'app-register-component',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './login-component.html',
-  styleUrl: './login-component.less',
+  templateUrl: './register-component.html',
+  styleUrl: './register-component.less',
 })
-export class LoginComponent {
+export class RegisterComponent {
+  protected readonly emptyString = SeparatorEnum.EmptyString;
   protected readonly GetStartedConstant = GetStartedConstant;
   protected readonly LoginConstant = LoginConstant;
   protected loginFormGroup: FormGroup;
-  protected formErrorMessage: string;
   protected isFormGroupValid: boolean;
   protected isOnSubmit: boolean;
-  protected formSucessMessage: string;
+  protected formErrorMessage: string;
 
   /**
    * Constructs the LoginComponent.
@@ -56,18 +56,17 @@ export class LoginComponent {
   public ngOnInit(): void {
     this.initializeFormGroup();
     this.isFormGroupValid = true;
-    this.formSucessMessage = this.loginService.signalMessage$();
   }
 
   /**
-   * Determines the navigation to other pages after an action.
+   * Determines the state of the form group.
    *
-   * @param    {boolean}  isForgotPassword  An action whether the it redirects to forgot password or not.
    * @returns  {void}
    */
-  protected onLoginAction(isForgotPassword?: boolean): void {
+  protected onLoginAction(): void {
     this.isFormGroupValid = true;
-    this.router.navigate([isForgotPassword ? RoutesEnum.ForgotPassword : RoutesEnum.Register]);
+    this.loginService.setSignalMessage(SeparatorEnum.EmptyString);
+    this.router.navigate([RoutesEnum.Login]);
   }
 
   /**
@@ -77,6 +76,8 @@ export class LoginComponent {
    */
   protected initializeFormGroup(): void {
     this.loginFormGroup = this.formBuilder.group({
+      firstName: [SeparatorEnum.EmptyString, Validators.required],
+      lastName: [SeparatorEnum.EmptyString, Validators.required],
       email: [SeparatorEnum.EmptyString, [Validators.required, Validators.email]],
       password: [
         SeparatorEnum.EmptyString,
@@ -91,7 +92,6 @@ export class LoginComponent {
    * @returns  {void}
    */
   protected onSubmit(): void {
-    this.formErrorMessage = SeparatorEnum.EmptyString;
     this.isOnSubmit = true;
     this.isFormGroupValid = this.loginFormGroup.valid;
 
@@ -99,20 +99,22 @@ export class LoginComponent {
       const controls: { [key: string]: AbstractControl<FormControl> } =
         this.loginFormGroup.controls;
 
-      this.determineLoginFormErrorMessage(controls);
+      this.determineRegisterFormErrorMessage(controls);
 
       this.isOnSubmit = false;
     } else {
-      const { email, password } = this.loginFormGroup.value;
-      const payload = new LoginPayload(email, password);
+      const { email, firstName, lastName, password } = this.loginFormGroup.value;
+      const payload = new RegisterPayload(email, firstName, lastName, password);
 
-      this.apiService.postLogin(payload).subscribe({
-        next: () => {
+      this.apiService.postRegister(payload).subscribe({
+        next: (response: any) => {
           this.isOnSubmit = false;
-          this.router.navigate([RoutesEnum.Home]);
+          this.loginService.setSignalMessage(response?.data?.message);
+          this.router.navigate([RoutesEnum.Login]);
         },
         error: (error) => {
-          this.loginService.setSignalMessage(error?.error?.message);
+          this.formErrorMessage = SeparatorEnum.EmptyString;
+          this.loginService.setSignalMessage(error?.error?.errorMessage);
           this.isOnSubmit = false;
         },
       });
@@ -125,13 +127,17 @@ export class LoginComponent {
    * @param   {Record<string, AbstractControl<FormControl>>} controls The controls of the form group.
    * @returns {void}
    */
-  private determineLoginFormErrorMessage(controls: {
+  private determineRegisterFormErrorMessage(controls: {
     [key: string]: AbstractControl<FormControl>;
   }): void {
-    if (controls['email'].invalid) {
+    if (controls['firstName'].invalid) {
+      this.setFormErrorMessage('firstName');
+    } else if (controls['lastName'].invalid) {
+      this.setFormErrorMessage('lastName');
+    } else if (controls['email'].invalid) {
       this.setFormErrorMessage('email');
     } else if (controls['password'].invalid) {
-      this.setFormErrorMessage('passwordLogin');
+      this.setFormErrorMessage('password');
     }
   }
 
