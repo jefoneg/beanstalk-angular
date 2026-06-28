@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
 import {
   AbstractControl,
   FormBuilder,
@@ -7,22 +7,24 @@ import {
   FormGroup,
   ReactiveFormsModule,
   Validators,
-} from '@angular/forms';
-import { Router } from '@angular/router';
-import { CommonConstant } from '../../../constants/common.constant';
-import { GetStartedConstant } from '../../../constants/get-started.constant';
-import { LoginConstant } from '../../../constants/login.constant';
-import { RoutesEnum } from '../../../enums/routes.enum';
-import { SeparatorEnum } from '../../../enums/separator.enum';
-import { ApiService } from '../../service/api-service';
-import { LoginService } from '../../service/login-service';
-import { LoginPayload } from '../../../modes/payload.model';
+} from "@angular/forms";
+import { Router } from "@angular/router";
+import { CommonConstant } from "../../../constants/common.constant";
+import { GetStartedConstant } from "../../../constants/get-started.constant";
+import { LoginConstant } from "../../../constants/login.constant";
+import { RoutesEnum } from "../../../enums/routes.enum";
+import { SeparatorEnum } from "../../../enums/separator.enum";
+import { ApiService } from "../../service/api-service";
+import { LoginService } from "../../service/login-service";
+import { LoginPayload } from "../../../modes/payload.model";
+import { StorageService } from "../../service/storage/storage.service";
+import { SessionKeyConstant } from "../../../constants/session-key.constant";
 
 @Component({
-  selector: 'app-login-component',
+  selector: "app-login-component",
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './login-component.html',
-  styleUrl: './login-component.less',
+  templateUrl: "./login-component.html",
+  styleUrl: "./login-component.less",
 })
 export class LoginComponent {
   protected readonly GetStartedConstant = GetStartedConstant;
@@ -36,16 +38,18 @@ export class LoginComponent {
   /**
    * Constructs the LoginComponent.
    *
-   * @param  {FormBuilder}  formBuilder  The form builde service.
-   * @param  {ApiService}   apiService   Service for api related functions.
-   * @param  {Router}       router       Router related services.
-   * @param  {LoginService} loginService Service for login related functions.
+   * @param  {FormBuilder}    formBuilder    The form builde service.
+   * @param  {ApiService}     apiService     Service for api related functions.
+   * @param  {Router}         router         Router related services.
+   * @param  {LoginService}   loginService   Service for login related functions.
+   * @param  {StorageService} storageService Service for storage related functions.
    */
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly apiService: ApiService,
     private readonly router: Router,
     protected readonly loginService: LoginService,
+    private readonly storageService: StorageService,
   ) {}
 
   /**
@@ -54,6 +58,7 @@ export class LoginComponent {
    * @returns  {void}
    */
   public ngOnInit(): void {
+    this.storageService.clear();
     this.initializeFormGroup();
     this.isFormGroupValid = true;
     this.formSucessMessage = this.loginService.signalMessage$();
@@ -94,6 +99,7 @@ export class LoginComponent {
     this.formErrorMessage = SeparatorEnum.EmptyString;
     this.isOnSubmit = true;
     this.isFormGroupValid = this.loginFormGroup.valid;
+    this.apiService.setLoaderVisibility(true);
 
     if (!this.loginFormGroup.valid) {
       const controls: { [key: string]: AbstractControl<FormControl> } =
@@ -107,13 +113,16 @@ export class LoginComponent {
       const payload = new LoginPayload(email, password);
 
       this.apiService.postLogin(payload).subscribe({
-        next: () => {
+        next: (data) => {
           this.isOnSubmit = false;
           this.router.navigate([RoutesEnum.Home]);
+          this.storageService.setItem(SessionKeyConstant.EMAIL, data.data.email);
+          this.apiService.setLoaderVisibility(false);
         },
         error: (error) => {
           this.loginService.setSignalMessage(error?.error?.message);
           this.isOnSubmit = false;
+          this.apiService.setLoaderVisibility(false);
         },
       });
     }
@@ -128,10 +137,10 @@ export class LoginComponent {
   private determineLoginFormErrorMessage(controls: {
     [key: string]: AbstractControl<FormControl>;
   }): void {
-    if (controls['email'].invalid) {
-      this.setFormErrorMessage('email');
-    } else if (controls['password'].invalid) {
-      this.setFormErrorMessage('passwordLogin');
+    if (controls["email"].invalid) {
+      this.setFormErrorMessage("email");
+    } else if (controls["password"].invalid) {
+      this.setFormErrorMessage("passwordLogin");
     }
   }
 
