@@ -103,6 +103,7 @@ export class RegisterComponent {
 
       this.isOnSubmit = false;
     } else {
+      this.apiService.setLoaderVisibility(true);
       const { email, firstName, lastName, password } = this.loginFormGroup.value;
       const payload = new RegisterPayload(email, firstName, lastName, password);
 
@@ -111,11 +112,13 @@ export class RegisterComponent {
           this.isOnSubmit = false;
           this.loginService.setSignalMessage(response?.data?.message);
           this.router.navigate([RoutesEnum.Login]);
+          this.apiService.setLoaderVisibility(false);
         },
         error: (error) => {
           this.formErrorMessage = SeparatorEnum.EmptyString;
           this.loginService.setSignalMessage(error?.error?.errorMessage);
           this.isOnSubmit = false;
+          this.apiService.setLoaderVisibility(false);
         },
       });
     }

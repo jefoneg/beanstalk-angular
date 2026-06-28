@@ -84,6 +84,8 @@ export class ForgotpasswordComponent {
       return;
     }
 
+    this.apiService.setLoaderVisibility(true);
+
     this.forgotPasswordService.setButtonState(true);
     const { email } = this.forgotPasswordForm.value;
     const payload = new ForgotPasswordPayload(false, email, SeparatorEnum.EmptyString);
@@ -93,11 +95,13 @@ export class ForgotpasswordComponent {
         this.forgotPasswordService.setButtonState(false);
         this.loginService.setSignalMessage(SeparatorEnum.EmptyString);
         this.forgotPasswordService.setEmailValidity(true);
+        this.apiService.setLoaderVisibility(false);
       },
       error: (error) => {
         this.forgotPasswordService.setButtonState(false);
         this.loginService.setSignalMessage(error.error.error);
         this.forgotPasswordService.setEmailValidity(false);
+        this.apiService.setLoaderVisibility(false);
       },
     });
   }
@@ -114,6 +118,8 @@ export class ForgotpasswordComponent {
       return;
     }
 
+    this.apiService.setLoaderVisibility(true);
+
     this.forgotPasswordService.setButtonState(true);
     const { password } = this.newPasswordForm.value;
     const payload = new ForgotPasswordPayload(true, this.forgotPasswordForm.value.email, password);
@@ -123,10 +129,12 @@ export class ForgotpasswordComponent {
         this.forgotPasswordService.setButtonState(false);
         this.loginService.setSignalMessage(data.data.message);
         this.router.navigate([RoutesEnum.Login]);
+        this.apiService.setLoaderVisibility(false);
       },
       error: (error) => {
         this.forgotPasswordService.setButtonState(false);
         this.loginService.setSignalMessage(error.error.error);
+        this.apiService.setLoaderVisibility(false);
       },
     });
   }
