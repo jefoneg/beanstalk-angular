@@ -71,6 +71,12 @@ export class ApiService {
     return this.http.post(this.concatEndpoint("forgot-password"), payload);
   }
 
+  /**
+   * Handles the check user access api post.
+   *
+   * @param    {any}              payload  The payload that contains the user access information.
+   * @returns  {Observable<any>}           Returns the result of the API.
+   */
   public postCheckUserAccess(payload: any): Observable<any> {
     return this.http.post(this.concatEndpoint("checkuser"), payload);
   }
