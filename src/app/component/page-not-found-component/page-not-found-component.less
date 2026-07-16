@@ -1,0 +1,70 @@
+@import "../../../variables.less";
+
+.container {
+
+  .illustration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    padding: 30px;
+
+    img {
+      @media (min-width: @phone-sm) {
+        width: 250px;
+        height: 250px;
+      }
+
+      @media (min-width: @desktop) {
+        width: 350px;
+        height: 350px;
+      }
+
+      @media (min-width: @large-desktop) {
+        width: 500px;
+        height: 500px;
+      }
+    }
+
+    h1 {
+      @media (min-width: @phone-sm) {
+        font-size: @phone-title-font-size;
+      }
+
+      @media (min-width: @large-desktop) {
+        font-size: @desktop-title-font-size;
+      }
+    }
+
+    p {
+      @media (min-width: @phone-sm) {
+        font-size: @phone-paragraph-font-size;
+      }
+
+      @media (min-width: @large-desktop) {
+        font-size: @desktop-paragraph-font-size;
+      }
+    }
+
+    .btn {
+      background-color: @quaternary-color;
+      font-weight: 600;
+      font-size: @phone-paragraph-font-size;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: @tertiary-color;
+        transform: scale(1.06);
+      }
+
+      @media (min-width: @tablet) {
+        font-size: @tablet-paragraph-font-size;
+      }
+
+      @media (min-width: @large-desktop) {
+        font-size: @laptop-paragraph-font-size;
+      }
+    }
+  }
+}

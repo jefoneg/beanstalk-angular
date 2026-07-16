@@ -1,15 +1,16 @@
-import { NgOptimizedImage } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { HomeHelpers } from '../../../../helpers/home-section.helper';
-import { CafeInformationModel } from '../../../../modes/cafe-information.model';
-import { HomeConstant } from '../../../../constants/home.constant';
-import { Router } from '@angular/router';
+import { NgOptimizedImage } from "@angular/common";
+import { Component, Input } from "@angular/core";
+import { HomeHelpers } from "../../../../helpers/home-section.helper";
+import { CafeInformationModel } from "../../../../modes/cafe-information.model";
+import { HomeConstant } from "../../../../constants/home.constant";
+import { Router } from "@angular/router";
+import { RoutesEnum } from "../../../../enums/routes.enum";
 
 @Component({
-  selector: 'app-homesection-component',
+  selector: "app-homesection-component",
   imports: [NgOptimizedImage],
-  templateUrl: './homesection-component.html',
-  styleUrl: './homesection-component.less',
+  templateUrl: "./homesection-component.html",
+  styleUrl: "./homesection-component.less",
 })
 export class HomesectionComponent {
   protected HomeHelpers = HomeHelpers;
@@ -28,7 +29,9 @@ export class HomesectionComponent {
    * @returns  {void}
    */
   protected onViewCafe(param: string): void {
-    this.router.navigate(['/cafe', param]);
+    this.router.navigate([`/${RoutesEnum.Cafes}`], {
+      queryParams: { cafe: param },
+    });
   }
 
   protected onViewMore(param: string): void {

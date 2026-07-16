@@ -7,6 +7,8 @@ import { LoginComponent } from "./component/login-component/login-component";
 import { RegisterComponent } from "./component/register-component/register-component";
 import { cafeResolver } from "./resolver/cafe.resolver";
 import { authGuard } from "./guard/auth-guard";
+import { CafeReviewComponent } from "./component/cafe-review-component/cafe-review-component";
+import { PageNotFoundComponent } from "./component/page-not-found-component/page-not-found-component";
 
 export const routes: Routes = [
   {
@@ -34,4 +36,12 @@ export const routes: Routes = [
     path: RoutesEnum.ForgotPassword,
     component: ForgotpasswordComponent,
   },
+  {
+    path: RoutesEnum.Cafes,
+    component: CafeReviewComponent,
+  },
+  {
+    path: RoutesEnum.PageNotFound,
+    component: PageNotFoundComponent
+  }
 ];

@@ -6,5 +6,6 @@ export enum RoutesEnum {
   Reviews = 'reviews',
   Profile = 'profile',
   Register = "register",
-  ForgotPassword = "forgot-password"
+  ForgotPassword = "forgot-password",
+  PageNotFound = "404"
 }
