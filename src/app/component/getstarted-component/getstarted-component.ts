@@ -65,10 +65,6 @@ export class GetstartedComponent {
    * @returns  {void}
    */
   protected onGetStarted(): void {
-    if (!this.isLoggedIn) {
-      this.router.navigate([RoutesEnum.Login]);
-    } else {
-      this.router.navigate([RoutesEnum.Home]);
-    }
+    this.router.navigate([RoutesEnum.Home]);
   }
 }

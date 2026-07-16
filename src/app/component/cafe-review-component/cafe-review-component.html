@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="cafe-review-contents">
+    <div class="image-container">
+      <img [src]="cafeReviewService.cafeReviewsResponse().cafeImage" alt="cafe-image" />
+    </div>
+    <div class="text-content-container">
+      <h1 class="cafe-title">{{ cafeReviewService.cafeReviewsResponse().cafeName }}</h1>
+      <p class="cafe-paragraph">{{ cafeReviewService.cafeReviewsResponse().cafeInformation }}</p>
+      <p class="rating">
+        {{ CafeReviewConstants.OVERALL_RATING }}
+        <strong>{{ cafeReviewService.cafeReviewsResponse().rating }}</strong>✨
+      </p>
+      <p class="tags">
+        @for (tag of cafeReviewService.cafeReviewsResponse().tags; track tag) {
+        <span>{{ tag }}</span>
+        }
+      </p>
+    </div>
+  </div>
+  <div class="review-comments-container">
+    @if (isLoggedIn) {
+    <form [formGroup]="postCommentFormGroup" (ngSubmit)="onSubmit()">
+      <h1>{{ CafeReviewConstants.SPILL_THE_BEANS }}</h1>
+      <div class="comment-group">
+        <textarea class="form-control" formControlName="comment" id="comment"></textarea>
+        <div class="submit-group">
+          <button class="btn" type="submit">{{ CafeReviewConstants.SPILL_THE_BEANS_BTN }}</button>
+        </div>
+      </div>
+    </form>
+    } @else {
+    <div class="alert" role="alert">
+      {{ CafeReviewConstants.WANT_TO_SPILL_THE_BEANS }}
+      <a (click)="onRouteAction()">{{ CafeReviewConstants.LOGIN_FIRST }}</a>
+    </div>
+    }
+    <div class="review-comments">
+      @for (comment of cafeReviewService.cafeReviewComments(); track comment) {
+      <p class="user-name">
+        <strong>{{ comment.reviewerName }}</strong>
+      </p>
+      <p class="date">{{ convertDateToString(comment.createdAt) }}</p>
+      <p class="rating">✨{{ comment.rating }}</p>
+      <p class="comment">"{{ comment.reviewComment }}"</p>
+      }
+    </div>
+  </div>
+</div>
