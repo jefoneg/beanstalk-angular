@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="greetings">
+    <h1>Welcome back, John Doe.👋</h1>
+    <p>Find your next favorite cafe.🌈</p>
+  </div>
+  @if (cafeInformation && 0 < cafeInformation.length) {
+    <app-homesection-component
+      [sectionTitle]="HomeConstant.SECTIONS.NEARBY_CAFES"
+      [cafeInformation]="cafeInformation"
+      viewMoreMode="nearbyCafes"
+    ></app-homesection-component>
+    <app-homesection-component
+      [sectionTitle]="HomeConstant.SECTIONS.TRENDING_CAFES"
+      [cafeInformation]="cafeInformation"
+      viewMoreMode="trendingCafes"
+    ></app-homesection-component>
+    <app-homesection-component
+      [sectionTitle]="HomeConstant.SECTIONS.HIDDEN_GEMS"
+      [cafeInformation]="cafeInformation"
+      viewMoreMode="hiddenGems"
+    ></app-homesection-component>
+  }
+</div>
