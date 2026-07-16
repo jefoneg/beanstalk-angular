@@ -1,0 +1,49 @@
+@if (shouldShowNavbar) {
+<nav class="navbar navbar-expand-lg rounded main-nav">
+  <div class="container">
+    <a class="navbar-brand col-lg-4 me-0"
+      ><img
+        [ngSrc]="NavBarConstant.APP_LOGO.SRC"
+        width="50"
+        height="50"
+        [alt]="NavBarConstant.APP_LOGO.ALT"
+        priority
+    /></a>
+    <button
+      class="navbar-toggler collapsed"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarsBootstrap"
+      aria-controls="navbarsBootstrap"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <img [src]="NavBarConstant.BURGER_ICON.SRC" alt="NavBarConstant.BURGER_ICON.ALT" />
+    </button>
+    <div class="navbar-collapse collapse justify-content-lg-end" id="navbarsBootstrap">
+      <ul class="navbar-nav col-lg-6 justify-content-lg-end text-end align-items-center">
+        @for (navItem of NavigationItems.NAV_LINKS; track navItem.urlName) {
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [ngClass]="{ active: currentUrl === navItem.url }"
+            (click)="navigateToRoute(navItem.url)"
+          >
+            {{ navItem.urlName }}
+          </a>
+        </li>
+        }
+        <li class="nav-item">
+          <a class="nav-link" (click)="navigateToRoute(NavigationItems.PROFILE_LINK)">
+            <div class="user-container">
+              <img
+                [src]="NavBarConstant.AVATAR_ICON.SRC"
+                [alt]="NavBarConstant.AVATAR_ICON.SRC"
+              /></div
+          ></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+}

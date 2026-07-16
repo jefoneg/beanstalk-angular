@@ -1,0 +1,63 @@
+<div class="container main-container">
+  <div class="login-container">
+    <img [src]="LoginConstant.LOGIN_SVG" [alt]="LoginConstant.LOGIN_SVG_ALT" />
+    <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
+      <div class="logintext-container">
+        <h1>
+          {{ LoginConstant.WELCOME_BACK }} <strong>{{ GetStartedConstant.APP_NAME }}</strong>
+        </h1>
+        <p>{{ LoginConstant.READY_FOR_ANOTHER_CUP }}</p>
+        <p>{{ LoginConstant.LOGIN_TO_DISCOVER }}</p>
+      </div>
+      <div class="error-message">
+        @if (loginService.signalMessage$() || formErrorMessage || formSucessMessage) {
+          <div
+            class="alert"
+            [ngClass]="
+              loginService.signalMessage$() || formErrorMessage ? 'alert-danger' : 'alert-success'
+            "
+            role="alert"
+          >
+            {{
+              loginService.signalMessage$()
+                ? loginService.signalMessage$()
+                : formSucessMessage
+                  ? formSucessMessage
+                  : formErrorMessage
+            }}
+          </div>
+        }
+      </div>
+      <div class="login-form">
+        <input
+          class="form-control"
+          formControlName="email"
+          type="email"
+          id="email"
+          [placeholder]="LoginConstant.EMAIL"
+        />
+        <input
+          class="form-control"
+          formControlName="password"
+          type="password"
+          id="password"
+          [placeholder]="LoginConstant.PASSWORD"
+        />
+        <button class="btn" [disabled]="isOnSubmit" type="submit">
+          {{ LoginConstant.LOGIN }}
+        </button>
+      </div>
+      <div class="new-account-container">
+        <p>
+          Forgot your password?
+          <a (click)="onLoginAction(true)">{{ LoginConstant.FORGOT_PASSWWORD }}</a>
+        </p>
+
+        <p>
+          {{ LoginConstant.ALREADY_HAVE_ACCOUNT }}
+          <a (click)="onLoginAction()">{{ LoginConstant.REGISTER }}</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

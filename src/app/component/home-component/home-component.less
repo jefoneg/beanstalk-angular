@@ -1,0 +1,23 @@
+@import '../../../variables.less';
+
+.container {
+  .greetings {
+    padding: 30px 0 0 0;
+
+    h1 {
+      font-size: @phone-title-font-size;
+
+      @media (min-width: @laptop) {
+        font-size: @laptop-title-font-size;
+      }
+    }
+
+    p {
+      font-size: @phone-paragraph-font-size;
+
+      @media (min-width: @laptop) {
+        font-size: @laptop-paragraph-font-size;
+      }
+    }
+  }
+}
